@@ -1,3 +1,7 @@
 *.cpp~
 build/
 *~
+src/FTGL/ftgl.h.bak
+src/FTVectoriser.cpp.bak
+src/CMakeLists.txt.bak
+CMakePresets.json

@@ -105,6 +105,20 @@ namespace FTGL
     extern char const *ftglGetString(int config);
 #endif
 
+#ifdef FTGL_LIBRARY_STATIC
+#  define FTGL_EXPORT
+#else
+#  ifdef _WIN32
+#    ifdef FTGL_LIBRARY
+#      define FTGL_EXPORT __declspec(dllexport)
+#    else
+#      define FTGL_EXPORT __declspec(dllimport)
+#    endif
+#  else
+#    define FTGL_EXPORT
+#  endif
+#endif
+
 // Compiler-specific conditional compilation
 #ifdef _MSC_VER // MS Visual C++
 

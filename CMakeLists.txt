@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10...3.31)
 
 PROJECT(FTGL)
 SET(CMAKE_MODULE_PATH ${FTGL_SOURCE_DIR})
@@ -8,6 +8,12 @@ SET(VERSION_MAJOR 3)
 SET(VERSION_MINOR 0)
 SET(FTGL_SOVERSION 1)
 
+IF(EXISTS "C:/code/freetype-install")
+    LIST(APPEND CMAKE_PREFIX_PATH "C:/code/freetype-install")
+ENDIF()
+IF(EXISTS "C:/Program Files/freeglut")
+    LIST(APPEND CMAKE_PREFIX_PATH "C:/Program Files/freeglut")
+ENDIF()
 FIND_PACKAGE(Freetype REQUIRED) # if it fails, check this: https://bugs.launchpad.net/ubuntu/+source/cmake/+bug/826988
 FIND_PACKAGE(OpenGL   REQUIRED)
 
@@ -45,6 +51,7 @@ IF(DOXYGEN_FOUND)
 ENDIF(DOXYGEN_FOUND)
 
 SUBDIRS(src)
+ADD_SUBDIRECTORY(example)
 
 FIND_PACKAGE(CxxTest)
 IF(CxxTest_FOUND)
