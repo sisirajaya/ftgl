@@ -14,6 +14,9 @@ ENDIF()
 IF(EXISTS "C:/Program Files/freeglut")
     LIST(APPEND CMAKE_PREFIX_PATH "C:/Program Files/freeglut")
 ENDIF()
+IF(EXISTS "C:/Program Files/doxygen/bin/doxygen.exe")
+    SET(DOXYGEN_EXECUTABLE "C:/Program Files/doxygen/bin/doxygen.exe" CACHE FILEPATH "Doxygen executable" FORCE)
+ENDIF()
 FIND_PACKAGE(Freetype REQUIRED) # if it fails, check this: https://bugs.launchpad.net/ubuntu/+source/cmake/+bug/826988
 FIND_PACKAGE(OpenGL   REQUIRED)
 
@@ -40,10 +43,17 @@ ENDIF(BUILD_SHARED_LIBS)
 
 ADD_CUSTOM_TARGET(doc)
 
-FIND_PACKAGE(Doxygen)
+FIND_PACKAGE(Doxygen QUIET)
 IF(DOXYGEN_FOUND)
+  SET(PACKAGE_NAME "FTGL")
+  SET(PACKAGE_VERSION "${VERSION_SERIES}.${VERSION_MAJOR}.${VERSION_MINOR}")
+  SET(top_srcdir "${PROJECT_SOURCE_DIR}")
+  configure_file(
+    "${PROJECT_SOURCE_DIR}/docs/doxygen.cfg.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
+    @ONLY)
   ADD_CUSTOM_TARGET(doxygen
-    ${DOXYGEN_EXECUTABLE}
+    ${DOXYGEN_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     COMMENT "Doxygen ...")
   ADD_DEPENDENCIES(doc doxygen)
